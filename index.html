@@ -1,0 +1,1509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JudyOps AI™ — AI Operations Assistant for Small Businesses</title>
+  <meta name="description" content="JudyOps AI™ helps small businesses turn repetitive tasks, lead follow-up, customer questions, appointment requests, and task routing into guided AI workflows with human oversight.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #0a0e17;
+      --bg-secondary: #0f172a;
+      --bg-card: #111827;
+      --bg-card-hover: #1a2236;
+      --border: #1e293b;
+      --border-light: #334155;
+      --text-primary: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --accent: #f59e0b;
+      --accent-hover: #d97706;
+      --accent-glow: rgba(245, 158, 11, 0.15);
+      --accent-soft: rgba(245, 158, 11, 0.08);
+      --green: #10b981;
+      --green-glow: rgba(16, 185, 129, 0.15);
+      --blue: #3b82f6;
+      --blue-glow: rgba(59, 130, 246, 0.15);
+      --purple: #8b5cf6;
+      --purple-glow: rgba(139, 92, 246, 0.15);
+      --red: #ef4444;
+      --red-glow: rgba(239, 68, 68, 0.15);
+      --radius: 16px;
+      --radius-sm: 10px;
+      --shadow: 0 4px 24px rgba(0,0,0,0.4);
+      --shadow-lg: 0 12px 40px rgba(0,0,0,0.5);
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── Navigation ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      background: rgba(10, 14, 23, 0.85);
+      backdrop-filter: blur(20px) saturate(1.2);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+    }
+
+    .nav-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 68px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 1.25rem;
+      color: var(--text-primary);
+      text-decoration: none;
+      letter-spacing: -0.5px;
+    }
+
+    .logo-icon {
+      width: 36px; height: 36px;
+      background: linear-gradient(135deg, var(--accent), #f97316);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      color: white;
+      box-shadow: 0 0 20px var(--accent-glow);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: var(--transition);
+      position: relative;
+    }
+
+    .nav-links a:hover {
+      color: var(--text-primary);
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0;
+      width: 0; height: 2px;
+      background: var(--accent);
+      transition: var(--transition);
+      border-radius: 1px;
+    }
+
+    .nav-links a:hover::after { width: 100%; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: var(--transition);
+      letter-spacing: 0.2px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), #f97316);
+      color: #fff;
+      box-shadow: 0 4px 20px var(--accent-glow), 0 0 0 1px rgba(245,158,11,0.2);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px var(--accent-glow), 0 0 0 1px rgba(245,158,11,0.3);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--text-primary);
+      border: 1px solid var(--border-light);
+    }
+
+    .btn-secondary:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .btn-sm { padding: 8px 18px; font-size: 0.85rem; }
+
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--text-primary);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 120px 24px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% -10%, rgba(245,158,11,0.08), transparent),
+        radial-gradient(ellipse 60% 40% at 80% 60%, rgba(59,130,246,0.06), transparent),
+        radial-gradient(ellipse 50% 50% at 20% 80%, rgba(139,92,246,0.05), transparent);
+      pointer-events: none;
+    }
+
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black 30%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      max-width: 1280px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 60px;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-left {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      background: var(--accent-soft);
+      border: 1px solid rgba(245,158,11,0.2);
+      border-radius: 100px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--accent);
+      width: fit-content;
+    }
+
+    .badge-dot {
+      width: 6px; height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.2); }
+    }
+
+    .hero h1 {
+      font-size: clamp(2.4rem, 5vw, 3.6rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -1.5px;
+      background: linear-gradient(135deg, #fff 0%, #cbd5e1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero h1 span {
+      background: linear-gradient(135deg, var(--accent), #f97316);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      font-size: 1.15rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      max-width: 520px;
+    }
+
+    .hero-ctas {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .hero-right {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 500px;
+    }
+
+    .dashboard-hub {
+      position: relative;
+      width: 320px;
+      height: 320px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hub-center {
+      width: 140px; height: 140px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), #f97316);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 60px var(--accent-glow), 0 0 0 1px rgba(245,158,11,0.3);
+      z-index: 10;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+
+    .hub-center .hub-icon {
+      font-size: 2.2rem;
+      margin-bottom: 4px;
+    }
+
+    .hub-center .hub-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: rgba(255,255,255,0.95);
+      letter-spacing: 0.5px;
+    }
+
+    .workflow-card {
+      position: absolute;
+      padding: 12px 18px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      box-shadow: var(--shadow);
+      white-space: nowrap;
+      animation: orbit 20s linear infinite;
+      transform-origin: center center;
+    }
+
+    .workflow-card .wf-icon {
+      width: 28px; height: 28px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+    }
+
+    .wf-1 { --angle: 0deg; --dist: 210px; --delay: 0s; }
+    .wf-2 { --angle: 45deg; --dist: 210px; --delay: -2.5s; }
+    .wf-3 { --angle: 90deg; --dist: 210px; --delay: -5s; }
+    .wf-4 { --angle: 135deg; --dist: 210px; --delay: -7.5s; }
+    .wf-5 { --angle: 180deg; --dist: 210px; --delay: -10s; }
+    .wf-6 { --angle: 225deg; --dist: 210px; --delay: -12.5s; }
+    .wf-7 { --angle: 270deg; --dist: 210px; --delay: -15s; }
+    .wf-8 { --angle: 315deg; --dist: 210px; --delay: -17.5s; }
+
+    @keyframes orbit {
+      0% { transform: rotate(var(--angle)) translateX(var(--dist)) rotate(calc(-1 * var(--angle))); }
+      100% { transform: rotate(calc(var(--angle) + 360deg)) translateX(var(--dist)) rotate(calc(-1 * var(--angle) - 360deg)); }
+    }
+
+    .connector-line {
+      position: absolute;
+      width: 2px;
+      background: linear-gradient(to bottom, transparent, var(--accent), transparent);
+      opacity: 0.3;
+      pointer-events: none;
+    }
+
+    /* ── Sections General ── */
+    section {
+      padding: 100px 24px;
+      position: relative;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-header {
+      text-align: center;
+      max-width: 640px;
+      margin: 0 auto 60px;
+    }
+
+    .section-header h2 {
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 800;
+      letter-spacing: -1px;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, #fff, #94a3b8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .section-header p {
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+      line-height: 1.7;
+    }
+
+    /* ── What JudyOps Handles ── */
+    .handles-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .handle-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .handle-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), transparent);
+      opacity: 0;
+      transition: var(--transition);
+    }
+
+    .handle-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--border-light);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .handle-card:hover::before { opacity: 1; }
+
+    .handle-icon {
+      width: 48px; height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      margin-bottom: 18px;
+    }
+
+    .handle-card h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--text-primary);
+    }
+
+    .handle-card p {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* ── How It Works ── */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      position: relative;
+    }
+
+    .step-connector {
+      position: absolute;
+      top: 40px;
+      left: 12.5%;
+      right: 12.5%;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--blue), var(--purple), var(--green));
+      opacity: 0.3;
+      z-index: 0;
+    }
+
+    .step {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px 24px;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+      transition: var(--transition);
+    }
+
+    .step:hover {
+      transform: translateY(-4px);
+      border-color: var(--border-light);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .step-num {
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: white;
+      margin: 0 auto 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+
+    .step:nth-child(2) .step-num { background: linear-gradient(135deg, var(--accent), #f97316); }
+    .step:nth-child(3) .step-num { background: linear-gradient(135deg, var(--blue), #6366f1); }
+    .step:nth-child(4) .step-num { background: linear-gradient(135deg, var(--purple), #a855f7); }
+    .step:nth-child(5) .step-num { background: linear-gradient(135deg, var(--green), #14b8a6); }
+
+    .step h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .step p {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* ── Use Cases ── */
+    .usecases-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 20px;
+    }
+
+    .usecase-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .usecase-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--blue));
+      transform: scaleX(0);
+      transition: transform 0.4s ease;
+      transform-origin: left;
+    }
+
+    .usecase-card:hover::after { transform: scaleX(1); }
+    .usecase-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--border-light);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .usecase-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .usecase-icon {
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+    }
+
+    .usecase-card h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    .usecase-card p {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .usecase-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 14px;
+    }
+
+    .tag {
+      padding: 4px 10px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    /* ── Why Different ── */
+    .diff-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .diff-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      transition: var(--transition);
+    }
+
+    .diff-card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 0 30px var(--accent-glow);
+    }
+
+    .diff-card h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .diff-card h3 .diff-icon {
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+
+    .diff-card p {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      padding-left: 42px;
+    }
+
+    /* ── Workflow Preview ── */
+    .workflow-preview {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 40px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .workflow-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      position: relative;
+    }
+
+    .workflow-step {
+      display: flex;
+      gap: 20px;
+      padding: 20px 0;
+      position: relative;
+    }
+
+    .workflow-step:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      left: 19px;
+      top: 50px;
+      width: 2px;
+      height: calc(100% - 20px);
+      background: linear-gradient(to bottom, var(--accent), transparent);
+      opacity: 0.4;
+    }
+
+    .wf-step-num {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: var(--bg-secondary);
+      border: 2px solid var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: var(--accent);
+      flex-shrink: 0;
+      z-index: 1;
+    }
+
+    .wf-step-content h4 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .wf-step-content p {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+
+    /* ── Demo Area ── */
+    .demo-area {
+      background: linear-gradient(180deg, var(--bg-secondary), var(--bg-card));
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 40px;
+      max-width: 700px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .demo-buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+
+    .demo-btn {
+      padding: 12px 24px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text-primary);
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: var(--transition);
+      font-family: inherit;
+    }
+
+    .demo-btn:hover, .demo-btn.active {
+      background: var(--accent-soft);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .demo-response {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 24px;
+      text-align: left;
+      min-height: 120px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .demo-response.hidden { display: none; }
+
+    .demo-avatar {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), #f97316);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+
+    .demo-message {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .demo-bubble {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px 12px 12px 4px;
+      padding: 14px 18px;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      max-width: 500px;
+    }
+
+    .demo-bubble strong {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    .demo-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 8px;
+      padding-left: 48px;
+    }
+
+    .status-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    /* ── CTA Section ── */
+    .cta-section {
+      background: linear-gradient(180deg, transparent, rgba(245,158,11,0.03), transparent);
+      text-align: center;
+    }
+
+    .cta-box {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 60px 40px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-box::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, var(--accent-glow), transparent 60%);
+      pointer-events: none;
+    }
+
+    .cta-box h2 {
+      font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+      font-weight: 800;
+      margin-bottom: 16px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-box p {
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+      margin-bottom: 28px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── Footer ── */
+    footer {
+      background: var(--bg-secondary);
+      border-top: 1px solid var(--border);
+      padding: 60px 24px 30px;
+    }
+
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 40px;
+    }
+
+    .footer-brand {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .footer-brand .logo {
+      font-size: 1.1rem;
+    }
+
+    .footer-brand p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .footer-links h4 {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    .footer-links ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .footer-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.88rem;
+      transition: var(--transition);
+    }
+
+    .footer-links a:hover {
+      color: var(--accent);
+    }
+
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 40px auto 0;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .footer-bottom p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    /* ── Scroll Reveal ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 1024px) {
+      .hero-content { grid-template-columns: 1fr; text-align: center; }
+      .hero-left { align-items: center; }
+      .hero-sub { max-width: 100%; }
+      .hero-right { min-height: 400px; }
+      .dashboard-hub { transform: scale(0.85); }
+      .steps { grid-template-columns: repeat(2, 1fr); }
+      .step-connector { display: none; }
+      .footer-inner { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .mobile-menu-btn { display: block; }
+      .hero { padding: 100px 20px 60px; }
+      .hero-right { display: none; }
+      section { padding: 60px 20px; }
+      .steps { grid-template-columns: 1fr; }
+      .handles-grid, .usecases-grid, .diff-grid { grid-template-columns: 1fr; }
+      .footer-inner { grid-template-columns: 1fr; gap: 30px; }
+      .footer-bottom { flex-direction: column; text-align: center; }
+      .workflow-preview, .demo-area { padding: 24px; }
+    }
+
+    /* Mobile nav overlay */
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      inset: 68px 0 0 0;
+      background: rgba(10,14,23,0.98);
+      backdrop-filter: blur(20px);
+      z-index: 999;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding-top: 40px;
+      gap: 24px;
+    }
+
+    .mobile-nav.active { display: flex; }
+
+    .mobile-nav a {
+      color: var(--text-primary);
+      text-decoration: none;
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    .mobile-nav .btn { margin-top: 12px; }
+  </style>
+<base target="_blank">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav>
+    <div class="nav-inner">
+      <a href="#" class="logo">
+        <div class="logo-icon">🤖</div>
+        JudyOps AI™
+      </a>
+      <ul class="nav-links">
+        <li><a href="#handles">What it handles</a></li>
+        <li><a href="#how-it-works">How it works</a></li>
+        <li><a href="#use-cases">Use cases</a></li>
+        <li><a href="#why-judyops">Why JudyOps</a></li>
+        <li><a href="https://calendly.com/farhad-nofa/30-minute-consultation" target="_blank" class="btn btn-primary btn-sm">Book a Consultation</a></li>
+      </ul>
+      <button class="mobile-menu-btn" onclick="toggleMobileNav()">☰</button>
+    </div>
+  </nav>
+
+  <div class="mobile-nav" id="mobileNav">
+    <a href="#handles" onclick="toggleMobileNav()">What it handles</a>
+    <a href="#how-it-works" onclick="toggleMobileNav()">How it works</a>
+    <a href="#use-cases" onclick="toggleMobileNav()">Use cases</a>
+    <a href="#why-judyops" onclick="toggleMobileNav()">Why JudyOps</a>
+    <a href="https://calendly.com/farhad-nofa/30-minute-consultation" target="_blank" class="btn btn-primary" onclick="toggleMobileNav()">Book a Consultation</a>
+  </div>
+
+  <!-- Hero -->
+  <section class="hero" id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-content">
+      <div class="hero-left">
+        <div class="badge">
+          <span class="badge-dot"></span>
+          Part of the JudyVA™ family
+        </div>
+        <h1>Your Daily Business Operations, <span>Guided by Judy.</span></h1>
+        <p class="hero-sub">JudyOps AI™ helps small businesses capture requests, follow up with leads, route tasks, update workflows, and escalate important issues — without letting work fall through the cracks.</p>
+        <div class="hero-ctas">
+          <a href="https://calendly.com/farhad-nofa/30-minute-consultation" target="_blank" class="btn btn-primary">Book a Consultation</a>
+          <a href="#handles" class="btn btn-secondary">See What JudyOps Handles ↓</a>
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="dashboard-hub">
+          <div class="hub-center">
+            <div class="hub-icon">🤖</div>
+            <div class="hub-label">JudyOps AI™</div>
+          </div>
+          <div class="workflow-card wf-1">
+            <div class="wf-icon" style="background:var(--green-glow);color:var(--green)">📞</div>
+            Lead Follow-Up
+          </div>
+          <div class="workflow-card wf-2">
+            <div class="wf-icon" style="background:var(--blue-glow);color:var(--blue)">💬</div>
+            Customer Questions
+          </div>
+          <div class="workflow-card wf-3">
+            <div class="wf-icon" style="background:var(--purple-glow);color:var(--purple)">📅</div>
+            Appointment Requests
+          </div>
+          <div class="workflow-card wf-4">
+            <div class="wf-icon" style="background:var(--red-glow);color:var(--red)">🔄</div>
+            Task Routing
+          </div>
+          <div class="workflow-card wf-5">
+            <div class="wf-icon" style="background:var(--green-glow);color:var(--green)">📝</div>
+            CRM Notes
+          </div>
+          <div class="workflow-card wf-6">
+            <div class="wf-icon" style="background:var(--blue-glow);color:var(--blue)">📎</div>
+            Document Collection
+          </div>
+          <div class="workflow-card wf-7">
+            <div class="wf-icon" style="background:var(--red-glow);color:var(--red)">🚨</div>
+            Human Escalation
+          </div>
+          <div class="workflow-card wf-8">
+            <div class="wf-icon" style="background:var(--purple-glow);color:var(--purple)">📊</div>
+            Daily Summary
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- What JudyOps Handles -->
+  <section id="handles">
+    <div class="container">
+      <div class="section-header reveal">
+        <h2>What JudyOps Handles</h2>
+        <p>Eight core workflows that keep your business moving forward — with human oversight when it matters.</p>
+      </div>
+      <div class="handles-grid">
+        <div class="handle-card reveal">
+          <div class="handle-icon" style="background:var(--green-glow);color:var(--green)">📞</div>
+          <h3>Lead Follow-Up</h3>
+          <p>JudyOps helps respond to new leads, draft follow-up messages, and remind the business owner when a lead needs attention.</p>
+        </div>
+        <div class="handle-card reveal">
+          <div class="handle-icon" style="background:var(--blue-glow);color:var(--blue)">💬</div>
+          <h3>Customer Questions</h3>
+          <p>JudyOps answers common business questions using approved business knowledge, keeping responses consistent and accurate.</p>
+        </div>
+        <div class="handle-card reveal">
+          <div class="handle-icon" style="background:var(--purple-glow);color:var(--purple)">📅</div>
+          <h3>Appointment Requests</h3>
+          <p>JudyOps guides users toward scheduling, booking links, or appointment request forms — streamlining the booking process.</p>
+        </div>
+        <div class="handle-card reveal">
+          <div class="handle-icon" style="background:var(--red-glow);color:var(--red)">🔄</div>
+          <h3>Task Routing</h3>
+          <p>JudyOps routes requests to the right person, department, or next step — ensuring nothing gets lost in the shuffle.</p>
+        </div>
+        <div class="handle-card reveal">
+          <div class="handle-icon" style="background:var(--green-glow);color:var(--green)">📝</div>
+          <h3>CRM / Contact Notes</h3>
+          <p>JudyOps helps summarize conversations and prepare CRM-ready notes, saving time on data entry and record-keeping.</p>
+        </div>
+        <div class="handle-card reveal">
+          <div class="handle-icon" style="background:var(--blue-glow);color:var(--blue)">📎</div>
+          <h3>Document Collection</h3>
+          <p>JudyOps guides customers to submit forms, files, or required information — making onboarding and intake smoother.</p>
+        </div>
+        <div class="handle-card reveal">
+          <div class="handle-icon" style="background:var(--red-glow);color:var(--red)">🚨</div>
+          <h3>Human Escalation</h3>
+          <p>JudyOps knows when a request should not be handled by AI and should be sent to a human for review or action.</p>
+        </div>
+        <div class="handle-card reveal">
+          <div class="handle-icon" style="background:var(--purple-glow);color:var(--purple)">📊</div>
+          <h3>Daily / Weekly Summary</h3>
+          <p>JudyOps summarizes activity, leads, unanswered questions, and workflow gaps — so owners stay informed without digging.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section id="how-it-works">
+    <div class="container">
+      <div class="section-header reveal">
+        <h2>How JudyOps Works</h2>
+        <p>Four simple steps to turn one repetitive business process into a guided AI workflow.</p>
+      </div>
+      <div class="steps">
+        <div class="step-connector"></div>
+        <div class="step reveal">
+          <div class="step-num">1</div>
+          <h3>Choose the Workflow</h3>
+          <p>We start with one repetitive task or process that takes too much time — such as following up with new leads, answering the same customer questions, collecting appointment information, routing requests, gathering documents, or preparing summaries.</p>
+        </div>
+        <div class="step reveal">
+          <div class="step-num">2</div>
+          <h3>Build the Workflow Logic</h3>
+          <p>We map what JudyOps should ask, answer, collect, recommend, and escalate — including approved answers, required questions, forms and links, contact information, routing rules, escalation rules, and the summary sent to the owner.</p>
+        </div>
+        <div class="step reveal">
+          <div class="step-num">3</div>
+          <h3>Launch JudyOps</h3>
+          <p>JudyOps is added where the workflow begins — on a website, QR code, landing page, product page, intake form, or internal process page. Once live, JudyOps guides people through the workflow instead of only answering basic questions.</p>
+        </div>
+        <div class="step reveal">
+          <div class="step-num">4</div>
+          <h3>Review, Improve, and Expand</h3>
+          <p>The business owner receives summaries, insights, and recommendations. Over time, JudyOps can improve the workflow and expand into additional business processes. Start with one workflow. Add more as the business sees results.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Use Cases -->
+  <section id="use-cases">
+    <div class="container">
+      <div class="section-header reveal">
+        <h2>Use Cases</h2>
+        <p>JudyOps AI™ adapts to the way your business actually works — across industries and team sizes.</p>
+      </div>
+      <div class="usecases-grid">
+        <div class="usecase-card reveal">
+          <div class="usecase-header">
+            <div class="usecase-icon" style="background:var(--red-glow);color:var(--red)">🍽️</div>
+            <h3>Restaurants</h3>
+          </div>
+          <p>Menu questions, catering requests, reservation links, allergy questions, and customer follow-up.</p>
+          <div class="usecase-tags">
+            <span class="tag">Menu Q&A</span>
+            <span class="tag">Catering</span>
+            <span class="tag">Reservations</span>
+          </div>
+        </div>
+        <div class="usecase-card reveal">
+          <div class="usecase-header">
+            <div class="usecase-icon" style="background:var(--green-glow);color:var(--green)">🏥</div>
+            <h3>Healthcare / Care Providers</h3>
+          </div>
+          <p>Service questions, intake guidance, appointment links, document reminders, and front-desk support.</p>
+          <div class="usecase-tags">
+            <span class="tag">Intake</span>
+            <span class="tag">Scheduling</span>
+            <span class="tag">Documents</span>
+          </div>
+        </div>
+        <div class="usecase-card reveal">
+          <div class="usecase-header">
+            <div class="usecase-icon" style="background:var(--blue-glow);color:var(--blue)">💼</div>
+            <h3>Consultants</h3>
+          </div>
+          <p>Lead qualification, consultation booking, proposal follow-up, and FAQ handling.</p>
+          <div class="usecase-tags">
+            <span class="tag">Qualification</span>
+            <span class="tag">Booking</span>
+            <span class="tag">Proposals</span>
+          </div>
+        </div>
+        <div class="usecase-card reveal">
+          <div class="usecase-header">
+            <div class="usecase-icon" style="background:var(--purple-glow);color:var(--purple)">🏢</div>
+            <h3>Property Management</h3>
+          </div>
+          <p>Tenant requests, maintenance routing, showing inquiries, and document collection.</p>
+          <div class="usecase-tags">
+            <span class="tag">Maintenance</span>
+            <span class="tag">Showings</span>
+            <span class="tag">Tenants</span>
+          </div>
+        </div>
+        <div class="usecase-card reveal">
+          <div class="usecase-header">
+            <div class="usecase-icon" style="background:var(--accent-glow);color:var(--accent)">🔧</div>
+            <h3>Local Service Businesses</h3>
+          </div>
+          <p>Quote requests, appointment scheduling, service questions, and review follow-up.</p>
+          <div class="usecase-tags">
+            <span class="tag">Quotes</span>
+            <span class="tag">Scheduling</span>
+            <span class="tag">Reviews</span>
+          </div>
+        </div>
+        <div class="usecase-card reveal">
+          <div class="usecase-header">
+            <div class="usecase-icon" style="background:var(--green-glow);color:var(--green)">💻</div>
+            <h3>SaaS / Product Pages</h3>
+          </div>
+          <p>Product explanation, demo requests, onboarding guidance, and feedback collection.</p>
+          <div class="usecase-tags">
+            <span class="tag">Demos</span>
+            <span class="tag">Onboarding</span>
+            <span class="tag">Feedback</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why JudyOps Is Different -->
+  <section id="why-judyops">
+    <div class="container">
+      <div class="section-header reveal">
+        <h2>Why JudyOps Is Different</h2>
+        <p>Not just another chatbot. JudyOps is built around the way small businesses actually operate.</p>
+      </div>
+      <div class="diff-grid">
+        <div class="diff-card reveal">
+          <h3><span class="diff-icon" style="background:var(--accent-glow);color:var(--accent)">⚙️</span> Built around workflows, not just chat</h3>
+          <p>JudyOps is designed to help complete business steps, not only answer questions. It guides visitors through multi-step processes.</p>
+        </div>
+        <div class="diff-card reveal">
+          <h3><span class="diff-icon" style="background:var(--green-glow);color:var(--green)">👤</span> Human approval when needed</h3>
+          <p>Sensitive or uncertain requests can be escalated instead of answered blindly. The business owner stays in control.</p>
+        </div>
+        <div class="diff-card reveal">
+          <h3><span class="diff-icon" style="background:var(--blue-glow);color:var(--blue)">🔗</span> QR-ready and website-ready</h3>
+          <p>JudyOps can work from a website, landing page, QR code, printed material, or product page — wherever your customers are.</p>
+        </div>
+        <div class="diff-card reveal">
+          <h3><span class="diff-icon" style="background:var(--purple-glow);color:var(--purple)">📚</span> Business knowledge first</h3>
+          <p>Before JudyOps goes live, the business information is organized so the assistant can respond more intelligently and accurately.</p>
+        </div>
+        <div class="diff-card reveal">
+          <h3><span class="diff-icon" style="background:var(--red-glow);color:var(--red)">🌐</span> Part of the JudyVA ecosystem</h3>
+          <p>JudyOps can connect with specialized Judy versions such as JudyServe™, JudyHotel™, JudyCare™, JudyFreshRoute™, and future Judy branches.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Example Workflow Preview -->
+  <section id="workflow-preview">
+    <div class="container">
+      <div class="section-header reveal">
+        <h2>Example Workflow Preview</h2>
+        <p>See how JudyOps guides a typical lead from first contact to follow-up summary.</p>
+      </div>
+      <div class="workflow-preview reveal">
+        <div class="workflow-steps">
+          <div class="workflow-step">
+            <div class="wf-step-num">1</div>
+            <div class="wf-step-content">
+              <h4>Visitor asks a question</h4>
+              <p>A potential customer visits your site and asks about your services.</p>
+            </div>
+          </div>
+          <div class="workflow-step">
+            <div class="wf-step-num">2</div>
+            <div class="wf-step-content">
+              <h4>JudyOps answers using approved business knowledge</h4>
+              <p>The response is based on your pre-approved answers, not generic AI guessing.</p>
+            </div>
+          </div>
+          <div class="workflow-step">
+            <div class="wf-step-num">3</div>
+            <div class="wf-step-content">
+              <h4>JudyOps captures name, email, phone, and need</h4>
+              <p>Qualifying details are gathered in a natural, conversational way.</p>
+            </div>
+          </div>
+          <div class="workflow-step">
+            <div class="wf-step-num">4</div>
+            <div class="wf-step-content">
+              <h4>JudyOps recommends the right next step</h4>
+              <p>Based on the need, JudyOps suggests the most appropriate action or resource.</p>
+            </div>
+          </div>
+          <div class="workflow-step">
+            <div class="wf-step-num">5</div>
+            <div class="wf-step-content">
+              <h4>JudyOps sends the booking link or form</h4>
+              <p>The visitor is guided to schedule, submit, or connect — without friction.</p>
+            </div>
+          </div>
+          <div class="workflow-step">
+            <div class="wf-step-num">6</div>
+            <div class="wf-step-content">
+              <h4>JudyOps prepares a summary for the business owner</h4>
+              <p>A clean summary is delivered so you know exactly what happened and what to do next.</p>
+            </div>
+          </div>
+          <div class="workflow-step">
+            <div class="wf-step-num">7</div>
+            <div class="wf-step-content">
+              <h4>JudyOps escalates if human attention is required</h4>
+              <p>If the request is sensitive, complex, or uncertain, it is flagged for human review.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Prototype Demo Area -->
+  <section id="demo">
+    <div class="container">
+      <div class="section-header reveal">
+        <h2>Try the JudyOps Workflow Preview</h2>
+        <p>Click a scenario below to see how JudyOps would handle it in your business.</p>
+      </div>
+      <div class="demo-area reveal">
+        <div class="demo-buttons">
+          <button class="demo-btn active" onclick="showDemo('lead')">New Lead</button>
+          <button class="demo-btn" onclick="showDemo('question')">Customer Question</button>
+          <button class="demo-btn" onclick="showDemo('appointment')">Appointment Request</button>
+        </div>
+        <div class="demo-response" id="demoResponse">
+          <div class="demo-message">
+            <div class="demo-avatar">🤖</div>
+            <div class="demo-bubble">
+              <strong>JudyOps detected a new lead.</strong><br><br>
+              She asked qualifying questions, captured contact details, and prepared a follow-up summary for the business owner. The lead has been tagged as "Warm — Needs callback within 24 hours."
+            </div>
+          </div>
+          <div class="demo-status">
+            <span class="status-dot"></span>
+            Workflow complete — summary sent to owner
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section" id="cta">
+    <div class="container">
+      <div class="cta-box reveal">
+        <h2>Ready to turn repetitive work into a guided AI workflow?</h2>
+        <p>Book a consultation with NOFA Business Consulting and see how JudyOps AI™ could work inside your business process.</p>
+        <a href="https://calendly.com/farhad-nofa/30-minute-consultation" target="_blank" class="btn btn-primary" style="font-size:1rem;padding:14px 32px;">Book a Consultation</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a href="#" class="logo">
+          <div class="logo-icon">🤖</div>
+          JudyOps AI™
+        </a>
+        <p>Part of the JudyVA™ family by NOFA Business Consulting / NOFA AI Factory.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="#handles">What it handles</a></li>
+          <li><a href="#how-it-works">How it works</a></li>
+          <li><a href="#use-cases">Use cases</a></li>
+          <li><a href="#why-judyops">Why JudyOps</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="https://calendly.com/farhad-nofa/30-minute-consultation" target="_blank">Book a Consultation</a></li>
+          <li><a href="https://nofabusinessconsulting.com" target="_blank">NOFA Business Consulting</a></li>
+          <li><a href="https://nofaaifactory.com" target="_blank">NOFA AI Factory</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Connect</h4>
+        <ul>
+          <li><a href="https://calendly.com/farhad-nofa/30-minute-consultation" target="_blank">Schedule a Call</a></li>
+          <li><a href="#demo">Try the Demo</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 JudyOps AI™ — Part of the JudyVA™ family. All rights reserved.</p>
+      <p>NOFA Business Consulting / NOFA AI Factory</p>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile nav toggle
+    function toggleMobileNav() {
+      document.getElementById('mobileNav').classList.toggle('active');
+    }
+
+    // Demo responses
+    const demoData = {
+      lead: {
+        text: `<strong>JudyOps detected a new lead.</strong><br><br>She asked qualifying questions, captured contact details, and prepared a follow-up summary for the business owner. The lead has been tagged as "Warm — Needs callback within 24 hours."`,
+        status: 'Workflow complete — summary sent to owner'
+      },
+      question: {
+        text: `<strong>JudyOps answered using approved business knowledge.</strong><br><br>She provided the correct response based on your pre-loaded business information and flagged one missing detail for the owner to review before the next interaction.`,
+        status: 'Answered — one item flagged for review'
+      },
+      appointment: {
+        text: `<strong>JudyOps guided the visitor to the booking link.</strong><br><br>She confirmed availability, sent the appropriate calendar link, and prepared an appointment request summary with all captured details for the business owner.`,
+        status: 'Booking link sent — summary prepared'
+      }
+    };
+
+    function showDemo(type) {
+      // Update buttons
+      document.querySelectorAll('.demo-btn').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+
+      // Update response with fade
+      const resp = document.getElementById('demoResponse');
+      resp.style.opacity = '0';
+      resp.style.transition = 'opacity 0.2s';
+
+      setTimeout(() => {
+        resp.innerHTML = `
+          <div class="demo-message">
+            <div class="demo-avatar">🤖</div>
+            <div class="demo-bubble">${demoData[type].text}</div>
+          </div>
+          <div class="demo-status">
+            <span class="status-dot"></span>
+            ${demoData[type].status}
+          </div>
+        `;
+        resp.style.opacity = '1';
+      }, 200);
+    }
+
+    // Scroll reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Close mobile nav on resize
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 768) {
+        document.getElementById('mobileNav').classList.remove('active');
+      }
+    });
+  </script>
+</body>
+</html>
